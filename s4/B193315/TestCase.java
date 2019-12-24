@@ -108,7 +108,7 @@ public class TestCase {
 	    System.out.println("Exception occurred: STOP");
 	}
 
-	// It returns 0 when SPACE is SPACE's length is zero.
+	// It returns 0 when SPACE's length is zero.
 	try {
 	    FrequencerInterface  myObject;
 	    int freq;
@@ -162,6 +162,64 @@ public class TestCase {
 	    myObject.setTarget("32".getBytes());
 	    value = myObject.estimation();
 	    System.out.println(">32 "+value);
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	// It returns 0.0 when the TARGET is not set
+	try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    System.out.println("checking s4.B193315.InformationEstimator");
+	    myObject = new s4.B193315.InformationEstimator();
+	    myObject.setSpace("3210321001230123".getBytes());
+	    value = myObject.estimation();
+	    System.out.println("[TARGET is not set] "+value);
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	// It returns 0.0 when the TARGET's length is zero
+	try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    System.out.println("checking s4.B193315.InformationEstimator");
+	    myObject = new s4.B193315.InformationEstimator();
+	    myObject.setSpace("3210321001230123".getBytes());
+	    myObject.setTarget("".getBytes());
+	    value = myObject.estimation();
+	    System.out.println("[TARGET's length is zero] "+value);
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	// It returns Double.MAX_VALUE when true value is finite.
+	try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    System.out.println("checking s4.B193315.InformationEstimator");
+	    myObject = new s4.B193315.InformationEstimator();
+	    myObject.setSpace("".getBytes());
+	    myObject.setTarget("0".getBytes());
+	    value = myObject.estimation();
+	    System.out.println("[true value is finite] >0 "+value);
+	}
+	catch(Exception e) {
+	    System.out.println("Exception occurred: STOP");
+	}
+
+	// It returns Double.MAX_VALUE when SPACE is not set.
+	try {
+	    InformationEstimatorInterface myObject;
+	    double value;
+	    System.out.println("checking s4.B193315.InformationEstimator");
+	    myObject = new s4.B193315.InformationEstimator();
+	    myObject.setTarget("0".getBytes());
+	    value = myObject.estimation();
+	    System.out.println("[SPACE is not set] >0 "+value);
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
