@@ -45,15 +45,48 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
 
     public double estimation(){
-		double[][]  dp;
-		if(myTarget.length > 0){
-			dp = new double[myTarget.length][myTarget.length];  // DPテーブル
-		}
-		else{
-			dp = new double[1][1];
-		} 
+		double[][]  dp = new double[myTarget.length][myTarget.length];  // DPテーブル 
 		double value;
-
+		/*
+		// DP初期条件
+		for(int j = 0; j < myTarget.length; j++){
+			myFrequencer.setTarget(subBytes(myTarget,j,j+1));
+			dp[0][j] = iq(myFrequencer.frequency());
+		}
+		// DPループ
+		for(int i = 1; i < myTarget.length; i++){
+			for(int j = 0; j < myTarget.length-i; j++){
+				myFrequencer.setTarget(subBytes(myTarget,j,j+i+1));
+				value = iq(myFrequencer.frequency());
+				dp[i][j] = Math.min(value,dp[i-1][j]+dp[i-1][j+1]);
+			}
+		}
+		*/
+		
+		// DP初期条件
+		for(int j = 0; j < myTarget.length; j++){
+			myFrequencer.setTarget(subBytes(myTarget,j,j+1));
+			dp[0][j] = iq(myFrequencer.frequency());
+		}
+		// DPループ
+		for(int i = 1; i < myTarget.length; i++){
+			value = Double.MAX_VALUE;
+			for(int j = 0; j < myTarget.length-i; j++){
+				myFrequencer.setTarget(subBytes(myTarget,j,j+i+1));
+				value = iq(myFrequencer.frequency());
+				if(i == 1){
+					dp[i][j] = Math.min(value,dp[i-1][j]+dp[i-1][j+1]);
+				}
+				else {
+					for(int k = 0; k < myTarget.length-1; k++){
+						value = Math.min(value, dp[k][0]+dp[myTarget.length-(2+k)][k+1]);
+					}
+					dp[i][j] = value;
+				}
+			}
+		}
+		
+		/*
 		// DP初期条件
 		for(int j = 0; j < myTarget.length; j++){
 			myFrequencer.setTarget(subBytes(myTarget,j,j+1));
@@ -77,6 +110,7 @@ public class InformationEstimator implements InformationEstimatorInterface{
 				}
 			}
 		}
+		*/
 		return dp[myTarget.length-1][0];
 	}
 
