@@ -160,18 +160,17 @@ public class Frequencer implements FrequencerInterface{
         // "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
         //
         // ここに比較のコードを書け 
-        int l;
         int length = Math.min(mySpace.length-i, k-j);
-        if(mySpace.length-i < k-j){
-          return -1;
-        }
-        for(l=0; l<length; l++){
+        for(int l=0; l<length; l++){
           if(mySpace[l+i]<myTarget[l+j]){
             return -1;
           }
           else if(mySpace[l+i]>myTarget[l+j]){
             return 1;
           }
+        }
+        if(mySpace.length-i < k-j){
+          return -1;
         }
         return 0;
     }
@@ -201,13 +200,40 @@ public class Frequencer implements FrequencerInterface{
         // Assuming the suffix array is created from "Hi Ho Hi Ho",                 
         // if target_start_end is "Ho ", it will return 6.                
         //                                                                          
-        // ここにコードを記述せよ。                                                 
+        // ここにコードを記述せよ。   
+        int i = 0, k, tmp;
+        int j = suffixArray.length - 1; 
+        while ( i <= j ) {
+          k = (i + j) / 2;
+          tmp = targetCompare(suffixArray[k], start, end);
+          if (tmp > 0){
+            j = k - 1;
+          }
+          else if (tmp < 0){
+            i = k + 1;
+          }
+          else if (k == 0){
+            return k;
+          }
+          else if (targetCompare(suffixArray[k-1], start, end) != 0){
+            return k;
+          }
+          else {
+            j = k - 1;
+          }
+        }
+        //if (targetCompare(suffixArray[0], start, end) == 0){
+        //  return suffixArray.length-1;
+        //}
+        return suffixArray.length;
+        /*
         for(int i=0; i<suffixArray.length; i++){
           if(targetCompare(suffixArray[i], start, end) == 0){
             return i;
           }
         }             
         return -1;
+        */
         //return suffixArray.length;          
     }
 
@@ -234,7 +260,8 @@ public class Frequencer implements FrequencerInterface{
         // Assuming the suffix array is created from "Hi Ho Hi Ho",          
         // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
         //                                                                   
-        //　ここにコードを記述せよ    
+        //　ここにコードを記述せよ 
+        /*   
         int i;
         boolean f = false;                      
         for(i = 0; i < suffixArray.length; i++){
@@ -248,7 +275,31 @@ public class Frequencer implements FrequencerInterface{
         if(f == true){
           return suffixArray.length;
         } 
-        return -1;                                           
+        return -1;                                          
+        */
+        int i = 0, j = suffixArray.length - 1, k, tmp;
+
+        while (i <= j) {
+            k = (i + j) / 2;
+            tmp = targetCompare(suffixArray[k], start, end);
+            if (tmp > 0){
+              j = k - 1;
+            }
+            else if (tmp < 0){ 
+              i = k + 1;
+            }
+            else if (k + 1 == suffixArray.length){
+              return suffixArray.length;
+            }
+            else if (targetCompare(suffixArray[k + 1], start, end) != 0){ 
+              return k + 1;
+            }
+            else{
+              i = k + 1;
+            }
+        }
+
+        return suffixArray.length;
     }
 
 
