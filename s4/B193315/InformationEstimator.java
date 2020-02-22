@@ -41,10 +41,17 @@ public class InformationEstimator implements InformationEstimatorInterface{
     }
     public void setSpace(byte []space) { 
     	myFrequencer = new Frequencer();
-    	mySpace = space; myFrequencer.setSpace(space); 
+    	mySpace = space; 
+    	myFrequencer.setSpace(space); 
     }
 
     public double estimation(){
+    	if (mySpace == null || mySpace.length <= 0) {
+    		return Double.MAX_VALUE;
+    	}
+    	if (myTarget == null || myTarget.length <= 0) {
+    		return 0.0;
+    	}
 		double value;		
 		double[][]  dp = new double[myTarget.length][myTarget.length];  // DPテーブル 
 		// DP初期条件
