@@ -92,6 +92,7 @@ public class Frequencer implements FrequencerInterface{
         //                                            
         // ここに、int suffixArrayをソートするコードを書け。
         // 　順番はsuffixCompareで定義されるものとする。
+        /*
         for(int i=0; i<mySpace.length-1; i++){
           for(int j=mySpace.length-1; j>i; j--){
             if(suffixCompare(suffixArray[j-1],suffixArray[j])==1){
@@ -101,6 +102,37 @@ public class Frequencer implements FrequencerInterface{
             }
           }
         }
+        */
+        // quick sort
+        quickSort(0, suffixArray.length - 1);
+    }
+
+    // quick sort
+    private void quickSort(int i, int j) {
+      if (i >= j) {
+        return;
+      }
+      int k = i;
+      int l = j;
+      int m = suffixArray[(k + l) / 2];
+      int tmp;
+      while (k <= l) {
+        while (suffixCompare(suffixArray[k], m) < 0) {
+          k++;
+        }
+        while (suffixCompare(suffixArray[l], m) > 0) {
+          l--;
+        }
+        if (k <= l){
+          tmp = suffixArray[k];
+          suffixArray[k] = suffixArray[l];
+          suffixArray[l] = tmp;
+          k++;
+          l--;
+        }
+      }
+      quickSort(i, l);
+      quickSort(k, j);
     }
 
     // Suffix Arrayを用いて、文字列の頻度を求めるコード
